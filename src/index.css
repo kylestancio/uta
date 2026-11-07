@@ -1,0 +1,523 @@
+:root {
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --text: #1c1b19;
+  --muted: #6b6860;
+  --border: #e2dfd8;
+  --accent: #1d4ed8;
+  --accent-soft: #e6ecfd;
+  --accent-text: #ffffff;
+  --danger: #b42318;
+  --guide: rgba(29, 78, 216, 0.1);
+  --shadow: 0 8px 24px rgba(20, 20, 20, 0.12);
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161614;
+    --surface: #1f1f1c;
+    --text: #ecebe7;
+    --muted: #a19e95;
+    --border: #34332f;
+    --accent: #7aa2ff;
+    --accent-soft: #23304f;
+    --accent-text: #0e1424;
+    --danger: #ff8a7a;
+    --guide: rgba(122, 162, 255, 0.14);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+a {
+  color: var(--accent);
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.mono {
+  font-family: var(--mono);
+}
+
+/* Layout */
+
+.app-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1rem clamp(1rem, 4vw, 2.5rem);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand-mark {
+  color: var(--accent);
+}
+
+.brand-tag {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.app-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 4vw, 2.5rem) 4rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.toolbar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Controls */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.btn-ghost {
+  border-color: transparent;
+  background: transparent;
+}
+
+.btn-danger {
+  color: var(--danger);
+}
+
+.btn-sm {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.field input,
+.field textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field-row .field {
+  min-width: 14rem;
+}
+
+.lyrics-input {
+  min-height: 55vh;
+  font-family: var(--mono) !important;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.step-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Steps */
+
+.steps {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 7px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.step.active {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--border);
+  font-size: 0.75rem;
+}
+
+.step.active .step-num {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* Home */
+
+.song-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.song-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.song-card-link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.song-card-link:hover .song-card-title {
+  color: var(--accent);
+}
+
+.song-card-title {
+  font-weight: 600;
+}
+
+.song-card-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.empty {
+  padding: 3rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.empty h2 {
+  margin-top: 0;
+}
+
+.empty p {
+  color: var(--muted);
+}
+
+/* Chord sheet */
+
+.sheet {
+  position: relative;
+  padding: 2rem clamp(1rem, 4vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow-x: auto;
+  font-size: 1rem;
+}
+
+.measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.sheet-title {
+  margin: 0;
+}
+
+.sheet-artist {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+.sheet-title + .line,
+.sheet-artist + .line,
+.sheet-title + .section-header,
+.sheet-artist + .section-header {
+  margin-top: 1.25rem;
+}
+
+.gap {
+  height: 1.25rem;
+}
+
+.section-header {
+  margin: 0.5rem 0 0.25rem;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.line {
+  position: relative;
+  font-family: var(--mono);
+  width: max-content;
+  min-width: 100%;
+  cursor: text;
+  user-select: none;
+}
+
+.chord-row,
+.lyric {
+  height: 1.5em;
+  line-height: 1.5em;
+  white-space: pre;
+}
+
+.chord-row {
+  position: relative;
+}
+
+.column-guide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1ch;
+  border-radius: 3px;
+  background: var(--guide);
+  pointer-events: none;
+}
+
+.chord {
+  position: absolute;
+  top: 0;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  color: var(--chord-color, var(--accent));
+  font: inherit;
+  font-weight: 700;
+  line-height: inherit;
+  cursor: grab;
+  touch-action: none;
+}
+
+.chord:hover,
+.chord:focus-visible {
+  background: var(--accent-soft);
+  outline: none;
+}
+
+.chord.dragging {
+  cursor: grabbing;
+  background: var(--accent-soft);
+}
+
+.chord-pending {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.chord-popover-anchor {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 1.5em;
+  pointer-events: none;
+}
+
+.chord-popover {
+  position: fixed;
+  z-index: 10;
+  width: 18rem;
+  max-width: calc(100vw - 16px);
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  cursor: default;
+  user-select: auto;
+}
+
+.chords-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.chords-toolbar .hint {
+  flex: 1;
+  min-width: 16rem;
+  margin: 0;
+}
+
+.color-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.color-field input[type="color"] {
+  width: 2.25rem;
+  height: 2rem;
+  padding: 0.15rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.chord-popover-form {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.chord-popover-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.95rem;
+}
+
+.chord-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.chip {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
