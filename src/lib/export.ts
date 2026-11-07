@@ -26,6 +26,7 @@ const download = (blob: Blob, filename: string) => {
 type Row =
   | { kind: "blank" }
   | { kind: "header"; text: string }
+  /** `text` is empty for an instrumental (chords-only) line. */
   | { kind: "lyric"; chords: string; text: string };
 
 /** Flattens a song into printable rows shared by the PDF and DOCX exporters. */
@@ -33,7 +34,7 @@ const toRows = (song: Song): Row[] =>
   song.lines.map((line) => {
     if (line.text.trim() === "" && line.chords.length === 0) return { kind: "blank" };
     if (isSectionHeader(line.text)) return { kind: "header", text: line.text.trim() };
-    return { kind: "lyric", chords: chordLineText(line.chords), text: line.text };
+    return { kind: "lyric", chords: chordLineText(line.chords), text: line.text.trim() ? line.text : "" };
   });
 
 export const exportJson = (song: Song) => {
@@ -121,16 +122,18 @@ export const exportPdf = async (song: Song) => {
       y += lineHeight;
       continue;
     }
-    const height = (row.chords ? lineHeight : 0) + lineHeight;
+    const height = (row.chords ? lineHeight : 0) + (row.text ? lineHeight : 0);
     ensureSpace(height);
     if (row.chords) {
       doc.setFont("courier", "bold").setFontSize(fontSize).setTextColor(chordColorOf(song));
       doc.text(row.chords, margin, y + fontSize);
       y += lineHeight;
     }
-    doc.setFont("courier", "normal").setFontSize(fontSize).setTextColor(0);
-    doc.text(row.text, margin, y + fontSize);
-    y += lineHeight;
+    if (row.text) {
+      doc.setFont("courier", "normal").setFontSize(fontSize).setTextColor(0);
+      doc.text(row.text, margin, y + fontSize);
+      y += lineHeight;
+    }
   }
 
   doc.save(`${fileBaseName(song)}.pdf`);
@@ -168,8 +171,10 @@ export const exportDocx = async (song: Song) => {
         }),
       );
     } else {
-      if (row.chords) children.push(mono(row.chords, { bold: true, color: chordColorOf(song).slice(1), keepNext: true }));
-      children.push(mono(row.text));
+      if (row.chords) {
+        children.push(mono(row.chords, { bold: true, color: chordColorOf(song).slice(1), keepNext: !!row.text }));
+      }
+      if (row.text) children.push(mono(row.text));
     }
   }
 

@@ -41,6 +41,8 @@ export const LineView = ({
     ? line.chords.map((chord) => (chord.id === drag.chordId ? { ...chord, position: drag.position } : chord))
     : line.chords;
   const placed = layoutChords(chords);
+  // A blank line is a verse gap until it gets chords; then it's an instrumental line.
+  const isBlank = line.text.trim() === "";
   const width = Math.max(line.text.length, ...placed.map(({ chord, column }) => column + chord.name.length)) + 2;
 
   const handleChordPointerDown = (event: PointerEvent<HTMLButtonElement>, column: number, chord: Chord) => {
@@ -69,8 +71,9 @@ export const LineView = ({
   return (
     <div
       ref={lineRef}
-      className="line"
-      style={{ minWidth: `${width}ch` }}
+      className={`line${isBlank ? (placed.length ? " line-instrumental" : " line-blank") : ""}`}
+      title={isBlank && !placed.length ? "Click to add instrumental chords" : undefined}
+      style={{ minWidth: `max(100%, ${width}ch)` }}
       onPointerMove={(e) => !drag && setHoverColumn(columnAt(e.clientX))}
       onPointerLeave={() => setHoverColumn(null)}
       onClick={(e) => onPlace(columnAt(e.clientX))}
@@ -114,7 +117,7 @@ export const LineView = ({
           </span>
         )}
       </div>
-      <div className="lyric mono">{line.text || " "}</div>
+      {!isBlank && <div className="lyric mono">{line.text}</div>}
       {children}
     </div>
   );
