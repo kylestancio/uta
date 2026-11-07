@@ -40,7 +40,9 @@ export const LyricsStep = () => {
       </label>
       <p className="hint">
         Leave a blank line between verses. Lines in brackets like <code>[Chorus]</code> become section
-        headings. Chords you've already placed stay with their line when you edit lyrics.
+        headings. For an instrumental part such as an intro, leave an empty line where it goes and add
+        chords to it in the next step. Chords you've already placed stay with their line when you edit
+        lyrics.
       </p>
       <div className="step-footer">
         <Link to="../chords" relative="path" className="btn btn-primary">

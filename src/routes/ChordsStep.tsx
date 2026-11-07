@@ -75,8 +75,8 @@ export const ChordsStep = () => {
     <div className="chords-step">
       <div className="chords-toolbar">
         <p className="hint">
-          Click above any letter to add a chord. Click a chord to change or remove it, drag it (or focus it
-          and use ← →) to move it.
+          Click above any letter to add a chord, or click an empty line for instrumental chords. Click a
+          chord to change or remove it, drag it (or focus it and use ← →) to move it.
         </p>
         <label className="color-field">
           <span>Chord color</span>
@@ -107,9 +107,6 @@ export const ChordsStep = () => {
         {song.artist && <p className="sheet-artist">{song.artist}</p>}
 
         {song.lines.map((line) => {
-          if (line.text.trim() === "" && line.chords.length === 0) {
-            return <div key={line.id} className="gap" />;
-          }
           if (isSectionHeader(line.text)) {
             return (
               <div key={line.id} className="section-header">
